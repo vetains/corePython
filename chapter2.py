@@ -180,8 +180,8 @@
 #     print eachLine
 # FFF.close()
 
-def main():
-    main.__doc__='''take a try at main.__doc__'''
-    pass
-
-main()
+# def main():
+#     main.__doc__='''take a try at main.__doc__'''
+#     pass
+#
+# main()
