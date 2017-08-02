@@ -230,73 +230,114 @@
 # print interest(10000,0.0001,365)
 
 #5-15
-from time import clock
-def GCDivisor(m,n):     #Greatest common divisor
-    if cmp(m,n) is 1:   #如果m>n，cmp(m,n)会返回1,相等返回0,m<n返回1
-        m,n=n,m         #把m，n从小到达排列，则不再需要额外的min
-    aList=range(1,m)[::-1]  #从后往前找的方法
-    for i in aList:
-        if m%i==0 and n%i==0:
-            break
-    return i
+# from time import clock
+# def GCDivisor(m,n):     #Greatest common divisor
+#     if cmp(m,n) is 1:   #如果m>n，cmp(m,n)会返回1,相等返回0,m<n返回1
+#         m,n=n,m         #把m，n从小到达排列，则不再需要额外的min
+#     aList=range(1,m)[::-1]  #从后往前找的方法
+#     for i in aList:
+#         if m%i==0 and n%i==0:
+#             break
+#     return i
+#
+#     # aList=range(1,m)      #从前往后找的方法
+#     # for i in aList:
+#     #     if m%i==0 and n%i==0:
+#     #         max=i
+#     # return max
+#
+# def LCMultiple(m,n):    #Least common multiple
+#     i=int(GCDivisor(m,n))
+#     return m*n/i        #LCM=(m/i)*(n/i)*i=m*n/i
+#
+# start1=clock()
+# m=66666;n=66665
+# print '最大公约数：',GCDivisor(m,n)
+# start11=clock()
+# print '耗时'+str((start11-start1)*1000)+'ms'
+#
+# #辗转相除法:两数中的最小数，和两数相除所得的余数的最大公约数，为两数的最大公约数
+# def ZZDivisor(m,n):
+#     if cmp(m,n) is 1:
+#         m,n=n,m     #m小n大
+#     q=1
+#     while q!=0:
+#         q=n%m       #q为两数余数
+#         n=m         #m比余数大，让m成为被除数
+#         m=q         #余数小，做除数
+#                     #一直循环到余数为零，此时被除数是最大公约数
+#     return n
+#
+# start2=clock()
+# m=9876543210;n=988543214
+# print '最大公约数：',ZZDivisor(m,n)
+# start22=clock()
+# print '耗时'+str((start22-start2)*1000)+'ms'
+#
+# #更相减损法：先判断两数是否同时为偶数，是则都除2,直到不是偶数；
+# #两数相减得差，用小数与差相减得差，再次用小数与差相减...直到所得差为0
+# #最大公约数等于差为0的数乘上约掉的若干个2
+# def JSDivisor(m,n):
+#     i=0
+#     while m%2==0 and n%2==0:
+#         m/=2
+#         n/=2
+#         i+=1
+#     q=1
+#     if cmp(m,n) is 1:
+#         m,n=n,m     #m小n大
+#     while q!=0:
+#         q=n-m
+#         if cmp(m,q) is 1:   #最后一步，q=0，m比q大
+#             m,n=q,m     #最后一步，m=q=0,值在n上
+#         else:
+#             m,n=m,q
+#
+#     return  n*(2**i)
+#
+# start3=clock()
+# m=9876543210;n=988543214
+# print '最大公约数：',JSDivisor(m,n)
+# start33=clock()
+# print '耗时'+str((start33-start3)*1000)+'ms'      #更相减损法总不如辗转相除法快
 
-    # aList=range(1,m)      #从前往后找的方法
-    # for i in aList:
-    #     if m%i==0 and n%i==0:
-    #         max=i
-    # return max
+#5-16
+# remaining={}
+# def getPaid(i,payment,balance):
+#     remaining[str(i)+'p']=payment
+#     remaining[str(i)+'b']=balance
+#
+# i=0
+# ob=float(raw_input('Enter opening balance:'))
+# mp=float(raw_input('Enter monthly payment:'))
+# getPaid(i,mp,ob)
+#
+# print "\n Enter '.' to quit\n"
+#
+# while True:
+#     payment=raw_input('Enter monthly payment:')
+#     if payment=='.':
+#         break
+#     i+=1
+#     payment=float(payment)
+#     balance=remaining[str(i-1)+'b']-payment
+#     getPaid(i,payment,balance)
+#
+# print
+# print ' '*5+'Amount Remaining'
+# print 'Pymt#'+'  '+'Paid'+' '*5+'Balance'
+# print '-'*5+  '  '+'-'*6 +' '*3 +'-'*9
+# for x in range(i+1):
+    # print x,' '*5+'$',remaining[str(x)+'p'],' '*3+'$',remaining[str(x)+'b']
 
-def LCMultiple(m,n):    #Least common multiple
-    i=int(GCDivisor(m,n))
-    return m*n/i        #LCM=(m/i)*(n/i)*i=m*n/i
-
-start1=clock()
-m=66666;n=66665
-print '最大公约数：',GCDivisor(m,n)
-start11=clock()
-print '耗时'+str((start11-start1)*1000)+'ms'
-
-#辗转相除法:两数中的最小数，和两数相除所得的余数的最大公约数，为两数的最大公约数
-def ZZDivisor(m,n):
-    if cmp(m,n) is 1:
-        m,n=n,m     #m小n大
-    q=1
-    while q!=0:
-        q=n%m       #q为两数余数
-        n=m         #m比余数大，让m成为被除数
-        m=q         #余数小，做除数
-                    #一直循环到余数为零，此时被除数是最大公约数
-    return n
-
-start2=clock()
-m=9876543210;n=988543214
-print '最大公约数：',ZZDivisor(m,n)
-start22=clock()
-print '耗时'+str((start22-start2)*1000)+'ms'
-
-#更相减损法：先判断两数是否同时为偶数，是则都除2,直到不是偶数；
-#两数相减得差，用小数与差相减得差，再次用小数与差相减...直到所得差为0
-#最大公约数等于差为0的数乘上约掉的若干个2
-def JSDivisor(m,n):
-    i=0
-    while m%2==0 and n%2==0:
-        m/=2
-        n/=2
-        i+=1
-    q=1
-    if cmp(m,n) is 1:
-        m,n=n,m     #m小n大
-    while q!=0:
-        q=n-m
-        if cmp(m,q) is 1:   #最后一步，q=0，m比q大
-            m,n=q,m     #最后一步，m=q=0,值在n上
-        else:
-            m,n=m,q
-
-    return  n*(2**i)
-
-start3=clock()
-m=9876543210;n=988543214
-print '最大公约数：',JSDivisor(m,n)
-start33=clock()
-print '耗时'+str((start33-start3)*1000)+'ms'      #更相减损法总不如辗转相除法快
+# # 5-17
+# from random import *
+# N=randint(2,100)    #N=randrange(2,101)
+# NList=[]
+# for i in range(N):
+#     NList.append(randint(0,(2**31)-1))   #NList.append(randrange(2**31))
+# N2=randint(2,N)
+# N2List=[]
+# for i in range(N2):
+#     N2List.append(choice(NList))
+# print N2List
