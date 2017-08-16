@@ -1,5 +1,56 @@
 #this is a file for chapter8  and chapter9
+exec 用于执行储存在字符串或文件中的代码
 The facebook logo is displayed in a startup companies gathering at Paris'Station F,Jan.17,2017.
 Facebook announced Tuesday that it now has more than 2 billion users.Facebook,which was a social
 website available only to Harvard University students when it was launched in 2004,has recently
 been criticized for giving extremist groups an easy way to disseminate content over the internet.
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
