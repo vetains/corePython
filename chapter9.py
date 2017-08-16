@@ -96,12 +96,45 @@
 #     f.write(eachline)
 # f.close()
 
-f=open('/home/vetains/pywork/pycore/8-10.txt','r')
-fList=f.readlines()
-f.close()
-e=0
-n=len(fList)
-for i in range(n):
-    print '第%s行:'%(i+1),fList[i]
-    if (i+1)%25==0:
-        raw_input('按任意键继续')
+# f=open('/home/vetains/pywork/pycore/8-10.txt','r')
+# fList=f.readlines()
+# f.close()
+# n=len(fList)
+# for i in range(n):
+#     print '第%s行:'%(i+1),fList[i]
+#     if (i+1)%25==0:     #i=24,49时分别为第25,50行
+#         raw_input('按任意键继续')
+
+# # 9-6 文件比较
+# f1=open('/home/vetains/pywork/pycore/8-10.txt','r')
+# f1List=f1.readlines()
+# f1.close()
+# n1=len(f1List)
+# f2=open('/home/vetains/pywork/pycore/8-10_copy.txt','r')
+# f2List=f2.readlines()
+# f2.close()
+# n2=len(f2List)
+# n=max(n1,n2)
+# for i in range(n):
+#     if f1List[i] != f2List[i]:
+#         print '第%i行不同'%i
+#         print '文件1为%s'%(f1List[i])
+#         print '文件2为%s'%(f2List[i])
+
+##试验：定义一个可迭代的函数
+def func(n):
+    l=[]
+    for i in range(n):
+        l.append(i*2)
+
+    # for i in range(len(l)):
+    #     yield l[i]
+
+    return iter(l)
+
+    return l
+
+n=10
+for i in func(n):
+    print i
+# 9-7 解析文件
