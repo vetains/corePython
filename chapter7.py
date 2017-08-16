@@ -283,23 +283,23 @@ aimString=str(raw_input('待加密字符：'))
 print JiaMi(aimString)
 
 
-def JieMi(aimString):
-    n=len(aimString)
-    newString=''
-    for i in range(n):
-        if aimString[i] in low_letters:
-            k=-13+low_letters.index(aimString[i])
-            if k<0:
-                k=k+26
-            new_chr=low_letters[k]
-        elif aimString[i] in up_letters:
-            k=-13+up_letters.index(aimString[i])
-            if k<0:
-                k=k+26
-            new_chr=up_letters[k]
-        else:
-            new_chr=aimString[i]
-        newString+=new_chr
-    return newString
-aimString=str(raw_input('待解密字符：'))
-print JieMi(aimString)
+# def JieMi(aimString):
+#     n=len(aimString)
+#     newString=''
+#     for i in range(n):
+#         if aimString[i] in low_letters:
+#             k=-13+low_letters.index(aimString[i])
+#             if k<0:
+#                 k=k+26
+#             new_chr=low_letters[k]
+#         elif aimString[i] in up_letters:
+#             k=-13+up_letters.index(aimString[i])
+#             if k<0:
+#                 k=k+26
+#             new_chr=up_letters[k]
+#         else:
+#             new_chr=aimString[i]
+#         newString+=new_chr
+#     return newString
+# aimString=str(raw_input('待解密字符：'))
+# print JieMi(aimString)
