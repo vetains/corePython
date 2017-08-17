@@ -122,24 +122,6 @@
 #         print '文件2为%s'%(f2List[i])
 
 ##试验：定义一个可迭代的函数
-<<<<<<< HEAD
-def func(n):
-    l=[]
-    for i in range(n):
-        l.append(i*2)
-
-    # for i in range(len(l)):
-    #     yield l[i]
-
-    # return iter(l)
-
-    return l
-
-n=10
-for i in func(n):
-    print i
-# 9-7 解析文件
-=======
 # def func(n):
 #     l=[]
 #     for i in range(n):
@@ -179,4 +161,3 @@ for elem in l:
     if x==5:    #每显示5个换行
         print
         x=0
->>>>>>> 9
