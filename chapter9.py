@@ -122,6 +122,7 @@
 #         print '文件2为%s'%(f2List[i])
 
 ##试验：定义一个可迭代的函数
+<<<<<<< HEAD
 def func(n):
     l=[]
     for i in range(n):
@@ -138,3 +139,44 @@ n=10
 for i in func(n):
     print i
 # 9-7 解析文件
+=======
+# def func(n):
+#     l=[]
+#     for i in range(n):
+#         l.append(i*2)
+#
+#     # for i in range(len(l)):
+#     #     yield l[i]
+#
+#     return iter(l)
+#
+#     return l
+#
+# n=10
+# for i in func(n):
+#     print i
+
+# 9-7 解析文件
+
+# # 9-8 模块研究
+def getMokuai():
+    Mokuai=raw_input('输入模块:')
+    try:
+        exec 'import '+Mokuai   #exec 执行字符串里的代码
+        #import Mokuai无法导入模块
+    except (SyntaxError,ImportError),e: #e是异常参数
+        print e
+        print '错误的模块'
+        getMokuai()
+    return Mokuai
+
+mokuai=getMokuai()
+l=list(dir(mokuai))
+x=0
+for elem in l:
+    print elem+';',
+    x+=1
+    if x==5:    #每显示5个换行
+        print
+        x=0
+>>>>>>> 9
