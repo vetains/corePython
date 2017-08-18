@@ -343,3 +343,180 @@
 #
 # list1=[1,3,5,7,9]
 # print average(list1)
+
+# # 11-10
+# folder='/home/vetains/pywork/pycore'
+# files=filter(labmbda x:x and x[0]!='.',os.listdir(folder))
+# '''返回一个列表，列表包含该目录下非隐藏文件和文件夹'''
+
+# # 11-11 map()
+# filename=raw_input('Enter a filename:')
+# f=open(filename,'r')
+# fileList=f.readlines()
+# f.close()
+# newList=map(lambda x:x.strip(),fileList)
+# inp=raw_input('覆盖(F) 新建(N)').lower()
+# if inp=='f':
+#     f=open(filename,'w')
+#     for eachLine in newList:
+#         f.write(eachLine+'\n')
+#     f.close()
+# elif inp=='n':
+#     newfilename=raw_input('Enter a new filename:')
+#     f=open(newfilename,'w')
+#     for eachLine in newList:
+#         f.write(eachLine+'\n')
+#     f.close()
+
+## 11-12 timeit()函数，检测参数函数运行的时间
+# #函数版本
+from time import time,sleep
+#
+def timeit0(func,n):
+    time1=time()*1000
+    result=func(n)
+    time2=time()*1000
+    return (result,str(time2-time1)+'ms'    )
+#
+#
+# def circle(n):
+#     l=[]
+#     for i in range(n):
+#         l.append(i)
+#         sleep(1)
+#     return l
+#
+# print timeit(circle,4)
+
+# #装饰器版本
+# from time import time,sleep
+#
+def timeit(func):
+    def inner(n):   #circle(n)的n放在这里
+        time1=time()*1000
+        result=func(n)
+        time2=time()*1000
+        return (result,str(time2-time1)+'ms')
+    return inner
+#
+# @timeit
+# def circle(n):
+#     l=[]
+#     for i in range(n):
+#         l.append(i)
+#         sleep(1)
+#     return l
+#
+# print circle(6)
+
+# 11-13 用reduce()进行函数式编程以及递归
+#(a)
+
+# def mult(x,y):
+#     return x*y
+#
+# #(b)
+# @timeit
+# def JieChen1(N):                        #速度第二
+#     return reduce(mult,range(1,N+1))    #不用mult(x,y)
+#
+# #(c)
+# @timeit
+# def JieChen2(N):
+#     return reduce(lambda x,y:x*y,range(1,N+1))  #三个阶乘中这个最快
+#
+# #(d)
+#
+# def DiGui(N):              #速度第三
+#     if N==1 or N==0:
+#         return 1
+#     else:
+#         return N*DiGui(N-1)
+#
+# funcList=[JieChen1,JieChen2,DiGui]
+# for eachFunc in funcList:
+#     if eachFunc==DiGui:
+#         print timeit0(eachFunc,200)
+#     else:
+#         print eachFunc(200)
+
+# # 11-14 递归斐波那契数列
+# def Febo(n):
+#     if n==0 or n==1:
+#         return 1
+#     else:
+#         return Febo(n-1)+Febo(n-2)
+#
+# print Febo(5)
+
+# 11-15 递归回文
+# def DiGuiHuiWen(astring):
+#     a=list(astring)
+#     b=list(astring)
+#     b.reverse()
+#     if a==b:
+#         return astring
+#     else:
+#         a.extend(b[1:])
+#         astring=''.join(a)
+#         return astring
+#
+# print DiGuiHuiWen('abccb')
+##以上直接处理成回文了。。
+
+# 11-6 升级easyMath.py
+from operator import add,sub,mul,div
+from random import choice,randint
+ops={'+':add,'-':sub,'*':mul,'/':div}
+maxtries=2
+#
+def easyMath():
+    def Answer(answer,m,oper,n):
+        astr='%i %s %i ='%(m,oper,n)
+        tries=0
+        while True:
+            try:
+                inp=int(raw_input(astr))
+                if inp==answer:
+                    break
+                else:
+                    if tries<maxtries:
+                        print 'try again'
+                        tries+=1
+                    elif tries>=maxtries:
+                        print 'the answer is '+astr+str(answer)
+                        print 'try again'
+            except Exception:
+                pass
+
+    oper=choice(ops.keys())
+    if oper in '+-*':
+        nums=[randint(1,10) for i in range(2)]
+        nums.sort(reverse=True) #num[0]比num[1]大
+        m=nums[0]
+        n=nums[1]
+        answer=ops[oper](m,n)
+        Answer(answer,m,oper,n)
+    elif oper is '/':
+        while True:
+            nums=[randint(1,10) for i in range(2)]
+            nums.sort(reverse=True)
+            if nums[0]/nums[1]==float(nums[0])/float(nums[1]):
+                break
+        m=nums[0]
+        n=nums[1]
+        answer=ops[oper](m,n)
+        Answer(answer,m,oper,n)
+
+def main():
+    while True:
+        easyMath()
+        try:
+            inp=raw_input('Again?(enter N to break)\n').lower()
+            if inp=='n' or inp[0]=='n':
+                break
+        except Exception:
+            pass
+
+if __name__=='__main__':
+    main()
