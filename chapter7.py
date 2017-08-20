@@ -38,133 +38,222 @@
 # print myDict
 
 # 7-5   #未完成
-# import shelve
-# import wx
-# import time
-# import sys
-#
-# # class Welcome(wx.Frame):
-# #     def __init__(self):
-# #         wx.Frame.__init__(self,None,-1,'Welcome',size=(200,200))
-# #         self.panel=wx.Panel(self,-1)
-#
-#
-# class Creation(wx.Frame):   #这是一个询问界面
+import shelve
+import wx
+from time import ctime,time
+import sys
+
+
+# class Welcome(wx.Frame):
 #     def __init__(self):
-#         wx.Frame.__init__(self,None,-1,'一个询问',pos=(60,60),size=(200,300))
-#         panel=wx.Panel(self,-1)
-#         self.text1=wx.StaticText(panel,label='你是否要注册一个账户？',
-#                                  pos=(50,50),size=(150,40))
-#         self.button1=wx.Button(panel,label='是',pos=(60,100),size=(40,20))
-#         self.button1.Bind(wx.EVT_BUTTON,self.LogOnClick)
-#         self.button2=wx.Button(panel,label='否',pos=(100,100),size=(40,20))
-#         self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
-#
-#     def QuitClick(self,event):
-#         self.Destroy()
-#     def LogOnClick(self,enent):
-#         logon=LogOn()
-#         logon.Show()
-#         self.Destroy()
-#
-# class LogOn(wx.Frame):
-#     def __init__(self):
-#         wx.Frame.__init__(self,None,-1,'创建账户',size=(500,500))
-#         panel=wx.Panel(self,-1)
-#         self.text1=wx.StaticText(panel,label='用户名:',pos=(50,50),size=(40,20))
-#         self.text2=wx.StaticText(panel,label='密码:',pos=(50,70),size=(40,20))
-#         self.textCtrl1=wx.TextCtrl(panel,pos=(90,50),size=(75,10))
-#         self.textCtrl2=wx.TextCtrl(panel,pos=(90,70),size=(75,10))
-#         self.name=str(self.textCtrl1.GetValue())
-#         self.password=str(self.textCtrl2.GetValue())
-#         self.button1=wx.Button(panel,label='创建账户',pos=(160,100),size=(40,20))
-#         self.button1.Bind(wx.EVT_BUTTON,
-#                 lambda event,n=self.name,p=self.password:self.CreateClick(event,n,p))
-#         self.button2=wx.Button(panel,label='取消',pos=(200,100),size=(40,20))
-#         self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
-#
-#     def QuitClick(self,event):
-#         self.Destroy()
-#     def CreateClick(self,event,name,password):
-#         db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
-#         db[name]=[]
-#         db[name].append(password)
-#         db[name].append(time.strftime("%Y-%m-%d %X"))
-#         db.close()
-#         self.Destroy()
-#
-# class adminMenue(wx.Frame):
-#     def __init__(self):
-#         wx.Frame.__init__(self,None,-1,'管理菜单',size=(600,600))
-#         panel=wx.Panel(self,-1)
-#         db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
-#         nameList=[]
-#         pwList=[]
-#         for eachKey in db:
-#             nameList.append(str(eachKey))
-#             pwList.append(str(db[eachKey][0]))
-#         db.close()
-#         nameStr='名单列表:\n'+'\n'.join(nameList)
-#         pwStr='密码列表:\n'+'\n'.join(pwList)
-#         self.text1=wx.StaticText(panel,label=nameStr,pos=(50,50),size=(200,200))
-#         self.text2=wx.StaticText(panel,label=pwStr,pos=(150,50),size=(200,200))
-#
-# def welcome(name,password):
-#     welcomeApp=wx.App()
-#     welcomeWin=wx.Frame(None,title='Welcome',size=(200,2000))
-#     panel=wx.Panel(welcomeWin,-1)
-#     text1=wx.StaticText(panel,label='Welcome,%s'%name,pos=(50,50),size=(50,10))
-#     db=shelve.open(r'/home/vetains/pywork/pycore/charpter7.dat')
-#     lastTime=db[name][1]
-#     db[name][1]=time.strftime("%Y-%m-%d %X")
-#     db.close()
-#     text2=wx.StaticText(panel,label=lastTime,pos=(50,60),size=(50,10))
-#     welcomeWin.show()
-#     welcomeApp.MainLoop()
-#
-#
-# def logInClick(event,name,password):
-#     db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
-#     keyList=db.keys()
-#     db.close()
-#     if name in keyList:
-#         welcome(name,password)
-#     else:
-#         creation=Creation()
-#         creation.Show()
-#
-# def adminMenuClick(event):
-#     admin=adminMenue()
-#     admin.Show()
-#
-# def quitClick(event):
-#     sys.exit()
-#
-#
+#         wx.Frame.__init__(self,None,-1,'Welcome',size=(200,200))
+#         self.panel=wx.Panel(self,-1)
+
+
+class Creation(wx.Frame):
+    '''一个询问界面'''
+    def __init__(self):
+        wx.Frame.__init__(self,None,-1,'一个询问',pos=(60,60),size=(250,300))
+        panel=wx.Panel(self,-1)
+        self.text1=wx.StaticText(panel,label='你是否要注册一个账户？',
+                                 pos=(50,50),size=(180,40))
+        self.button1=wx.Button(panel,label='是',pos=(60,100),size=(40,25))
+        self.button1.Bind(wx.EVT_BUTTON,self.LogOnClick)
+        self.button2=wx.Button(panel,label='否',pos=(100,100),size=(40,25))
+        self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
+
+    def QuitClick(self,event):
+        self.Destroy()
+    def LogOnClick(self,enent):
+        logon=LogOn()
+        logon.Show()
+        self.Destroy()
+
+class LogOn(wx.Frame):
+    '''一个注册界面'''
+    def __init__(self):
+        wx.Frame.__init__(self,None,-1,'创建账户',size=(400,250))
+        panel=wx.Panel(self,-1)
+        #用户名与密码文本框
+        db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
+        now=ctime(time())   #now是由ctime()返回的
+        self.text1=wx.StaticText(panel,label='用户名:',pos=(50,50),size=(50,25))
+        self.text2=wx.StaticText(panel,label='密码:',pos=(50,70),size=(50,25))
+        self.textCtrl1=wx.TextCtrl(panel,pos=(105,50),size=(75,25))
+        self.textCtrl2=wx.TextCtrl(panel,pos=(105,70),size=(75,25))
+        self.name=str(self.textCtrl1.GetValue())
+        self.password=str(self.textCtrl2.GetValue())
+        #注册按钮
+        self.button1=wx.Button(panel,label='注册',pos=(65,100),size=(40,30))
+        # self.button1.Bind(wx.EVT_BUTTON,lambda event,\
+        #     n=self.name,p=self.password:self.CreateClick(event,n,p))
+        self.button1.Bind(wx.EVT_BUTTON,self.CreateClick)
+        #取消按钮
+        self.button2=wx.Button(panel,label='取消',pos=(105,100),size=(40,30))
+        self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
+
+    def QuitClick(self,event):
+        '''取消事件'''
+        self.Destroy()
+
+    def CreateClick(self,event):
+        '''注册事件'''
+        name=str(self.textCtrl1.GetValue())
+        password=str(self.textCtrl2.GetValue())
+
+        db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
+        now=ctime(time())   #now是由ctime()返回的字符串
+        newUser={'password':password,'time':now}
+        db[name]=newUser
+        db.close()
+        self.Destroy()
+
+class adminMenue(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self,None,-1,'管理菜单',size=(600,600))
+        panel=wx.Panel(self,-1)
+        db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+        nameList=[]
+        pwList=[]
+        timeList=[]
+        for eachKey in db.keys():
+            nameList.append(eachKey)
+            pwList.append(db[eachKey]['password'])
+            timeList.append(db[eachKey]['time'])
+        db.close()
+        nameStr='名单列表:\n'+'\n'.join(nameList)
+        pwStr='密码列表:\n'+'\n'.join(pwList)
+        timeStr='登录时间:\n'+'\n'.join(timeList)
+        self.text1=wx.StaticText(panel,label=nameStr,pos=(50,50),size=(200,200))
+        self.text2=wx.StaticText(panel,label=pwStr,pos=(150,50),size=(200,200))
+        self.text3=wx.StaticText(panel,label=timeStr,pos=(250,50),size=(200,200))
+
+class Main(wx.Frame):
+    '''主界面'''
+    def __init__(self):
+        wx.Frame.__init__(self,None,-1,'主界面',size=(360,240))
+        panel=wx.Panel(self,-1)
+        #用户名
+        self.text1=wx.StaticText(panel,label='用户名:',pos=(10,10),size=(100,50))
+        self.textCtrl1=wx.TextCtrl(panel,pos=(100,10),size=(100,10))
+        # name=str(textCtrl1.GetValue())    #像这样直接获取文本框的文本是不可行的.
+        #密码
+        self.text2=wx.StaticText(panel,label='密码:',pos=(10,60),size=(100,50))
+        self.textCtrl2=wx.TextCtrl(panel,pos=(100,60),size=(100,0))
+        # password=str(textCtrl2.GetValue())
+
+        #登录按钮
+        self.logInButton=wx.Button(panel,-1,label='登录',pos=(30,180),size=(100,50))
+        self.logInButton.Bind(wx.EVT_BUTTON,self.logInClick)
+        #菜单按钮
+        self.adminMenuButton=wx.Button(panel,-1,label='菜单管理',pos=(130,180),size=(100,50))
+        self.adminMenuButton.Bind(wx.EVT_BUTTON,self.adminMenuClick)
+        #退出按钮
+        self.quitButton=wx.Button(panel,-1,label='退出',pos=(230,180),size=(100,50))
+        self.quitButton.Bind(wx.EVT_BUTTON,self.quitClick)
+
+    def adminMenuClick(self,event):
+        '''菜单按钮事件'''
+        admin=adminMenue()
+        admin.Show()
+
+    def quitClick(self,event):
+        '''退出按钮事件'''
+        sys.exit()
+
+    def logInClick(self,event):
+        '''登录按钮事件'''
+
+        name=str(self.textCtrl1.GetValue())
+        password=str(self.textCtrl2.GetValue())
+
+        db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+        keyList=db.keys()
+        db.close()
+
+        if name in keyList:
+
+            db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+            dbPassword=db[name]['password']
+            db.close()
+
+            if password==dbPassword:
+                '''用户名已存在且密码正确则唤起欢迎界面'''
+                self.welcome(name,password)
+            else:
+                '''密码错误唤起密码错误界面'''
+                self.refuse(name)
+        else:
+            '''用户名不存在则询问是否注册'''
+            creation=Creation()
+            creation.Show()
+
+    def welcome(self,name,password):
+        '''欢迎界面'''
+        welcomeApp=wx.App()
+        welcomeWin=wx.Frame(None,title='欢迎!',size=(400,400))
+        panel=wx.Panel(welcomeWin,-1)
+
+        welStr='欢迎,%s,你的上次登录时间为'
+        text1=wx.StaticText(panel,label=welStr%name,pos=(50,50),size=(500,20))
+        db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+        lastTime=db[name]['time']    #上次登录时间
+        now=ctime(time())            #更新登录时间
+        db[name]={'password':password,'time':now}
+        db.close()
+
+        text2=wx.StaticText(panel,label=lastTime,pos=(50,80),size=(250,20))
+
+        welcomeWin.Show()
+        welcomeApp.MainLoop()
+
+    def refuse(self,name):
+        '''密码错误界面'''
+        refuseApp=wx.App()
+        refuseWin=wx.Frame(None,title='密码错误!',size=(200,200))
+        panel=wx.Panel(refuseWin,-1)
+        text1=wx.StaticText(panel,label='%s,密码错误'%name,pos=(50,50),size=(50,10))
+        refuseWin.Show()
+        refuseApp.MainLoop()
+
+
+
+
 # def main():
-#     db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
 #     app=wx.App()
 #     win=wx.Frame(None,title='Log in System',pos=(50,50),size=(360,240))
 #     panel=wx.Panel(win,-1)
 #
-#     text1=wx.StaticText(panel,label='User\'s Name:',pos=(10,10),size=(100,50))
+#     #用户名
+#     text1=wx.StaticText(panel,label='用户名:',pos=(10,10),size=(100,50))
 #     textCtrl1=wx.TextCtrl(panel,pos=(100,10),size=(100,10))
 #     name=str(textCtrl1.GetValue())
-#     text2=wx.StaticText(panel,label='Password:',pos=(10,60),size=(100,50))
+#     #密码
+#     text2=wx.StaticText(panel,label='密码:',pos=(10,60),size=(100,50))
 #     textCtrl2=wx.TextCtrl(panel,pos=(100,60),size=(100,0))
 #     password=str(textCtrl2.GetValue())
 #
-#     logInButton=wx.Button(panel,-1,label='Log IN',pos=(30,180),size=(100,50))
-#     logInButton.Bind(wx.EVT_BUTTON,lambda event,n=name,p=password:logInClick(event,n,p))
-#     adminMenuButton=wx.Button(panel,-1,label='Admin Menu',pos=(130,180),size=(100,50))
+#     #登录按钮
+#     logInButton=wx.Button(panel,-1,label='登录',pos=(30,180),size=(100,50))
+#     logInButton.Bind(wx.EVT_BUTTON,\
+#             lambda event,n=name,p=password:logInClick(event,n,p))
+#     #菜单按钮
+#     adminMenuButton=wx.Button(panel,-1,label='菜单管理',pos=(130,180),size=(100,50))
 #     adminMenuButton.Bind(wx.EVT_BUTTON,adminMenuClick)
-#     quitButton=wx.Button(panel,-1,label='Quit',pos=(230,180),size=(100,50))
+#     #退出按钮
+#     quitButton=wx.Button(panel,-1,label='退出',pos=(230,180),size=(100,50))
 #     quitButton.Bind(wx.EVT_BUTTON,quitClick)
 #     win.Show()
 #     app.MainLoop()
-#
-# if __name__=='__main__':
-#     main()
+
+def test():
+    app=wx.App()
+    main=Main()
+    main.Show()
+    app.MainLoop()
+
+if __name__=='__main__':
+    test()
 
 # # 7-7
 # def new_dict(oldDict):
@@ -254,33 +343,33 @@
 #
 # print tr(srcstr,dststr,aim_string)
 
-# 7-10  rot13加密
-#(a)
-import string
-low_letters=list(string.letters[:26])
-up_letters=list(string.letters[26:])
-
-def JiaMi(aimString):
-    n=len(aimString)
-    newString=''
-    for i in range(n):
-        if aimString[i] in low_letters:
-            k=13+low_letters.index(aimString[i])
-            if k>25:
-                k=k-26
-            new_chr=low_letters[k]
-        elif aimString[i] in up_letters:
-            k=13+up_letters.index(aimString[i])
-            if k>25:
-                k=k-26
-            new_chr=up_letters[k]
-        else:
-            new_chr=aimString[i]
-        newString+=new_chr
-    return newString
-
-aimString=str(raw_input('待加密字符：'))
-print JiaMi(aimString)
+# # 7-10  rot13加密
+# #(a)
+# import string
+# low_letters=list(string.letters[:26])
+# up_letters=list(string.letters[26:])
+#
+# def JiaMi(aimString):
+#     n=len(aimString)
+#     newString=''
+#     for i in range(n):
+#         if aimString[i] in low_letters:
+#             k=13+low_letters.index(aimString[i])
+#             if k>25:
+#                 k=k-26
+#             new_chr=low_letters[k]
+#         elif aimString[i] in up_letters:
+#             k=13+up_letters.index(aimString[i])
+#             if k>25:
+#                 k=k-26
+#             new_chr=up_letters[k]
+#         else:
+#             new_chr=aimString[i]
+#         newString+=new_chr
+#     return newString
+#
+# aimString=str(raw_input('待加密字符：'))
+# print JiaMi(aimString)
 
 
 # def JieMi(aimString):
