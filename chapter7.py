@@ -44,12 +44,6 @@ from time import ctime,time
 import sys
 
 
-# class Welcome(wx.Frame):
-#     def __init__(self):
-#         wx.Frame.__init__(self,None,-1,'Welcome',size=(200,200))
-#         self.panel=wx.Panel(self,-1)
-
-
 class Creation(wx.Frame):
     '''一个询问界面'''
     def __init__(self):
