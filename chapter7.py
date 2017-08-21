@@ -43,15 +43,8 @@ import wx
 from time import ctime,time
 import sys
 
-
-# class Welcome(wx.Frame):
-#     def __init__(self):
-#         wx.Frame.__init__(self,None,-1,'Welcome',size=(200,200))
-#         self.panel=wx.Panel(self,-1)
-
-
 class Creation(wx.Frame):
-    '''一个询问界面'''
+    '''询问界面'''
     def __init__(self):
         wx.Frame.__init__(self,None,-1,'一个询问',pos=(60,60),size=(250,300))
         panel=wx.Panel(self,-1)
@@ -63,14 +56,16 @@ class Creation(wx.Frame):
         self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
 
     def QuitClick(self,event):
+        '''退出按钮事件'''
         self.Destroy()
     def LogOnClick(self,enent):
+        '''注册按钮事件'''
         logon=LogOn()
         logon.Show()
         self.Destroy()
 
 class LogOn(wx.Frame):
-    '''一个注册界面'''
+    '''注册界面'''
     def __init__(self):
         wx.Frame.__init__(self,None,-1,'创建账户',size=(400,250))
         panel=wx.Panel(self,-1)
@@ -81,11 +76,11 @@ class LogOn(wx.Frame):
         self.text2=wx.StaticText(panel,label='密码:',pos=(50,70),size=(50,25))
         self.textCtrl1=wx.TextCtrl(panel,pos=(105,50),size=(75,25))
         self.textCtrl2=wx.TextCtrl(panel,pos=(105,70),size=(75,25))
-        self.name=str(self.textCtrl1.GetValue())
-        self.password=str(self.textCtrl2.GetValue())
+        # self.name=str(self.textCtrl1.GetValue())  #在这里取值取不到任何值
+        # self.password=str(self.textCtrl2.GetValue())
         #注册按钮
         self.button1=wx.Button(panel,label='注册',pos=(65,100),size=(40,30))
-        # self.button1.Bind(wx.EVT_BUTTON,lambda event,\
+        # self.button1.Bind(wx.EVT_BUTTON,lambda event,\    #因为取不到n,p值,所以不用这个绑定方法
         #     n=self.name,p=self.password:self.CreateClick(event,n,p))
         self.button1.Bind(wx.EVT_BUTTON,self.CreateClick)
         #取消按钮
@@ -109,10 +104,12 @@ class LogOn(wx.Frame):
         self.Destroy()
 
 class adminMenue(wx.Frame):
+    '''管理菜单界面'''
     def __init__(self):
         wx.Frame.__init__(self,None,-1,'管理菜单',size=(600,600))
         panel=wx.Panel(self,-1)
         db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+        #三个值的列表
         nameList=[]
         pwList=[]
         timeList=[]
@@ -121,9 +118,11 @@ class adminMenue(wx.Frame):
             pwList.append(db[eachKey]['password'])
             timeList.append(db[eachKey]['time'])
         db.close()
+        #获取值,并创建字符串使其以每行一个的形式摆放
         nameStr='名单列表:\n'+'\n'.join(nameList)
         pwStr='密码列表:\n'+'\n'.join(pwList)
         timeStr='登录时间:\n'+'\n'.join(timeList)
+        #三个静态文本框展示这些值
         self.text1=wx.StaticText(panel,label=nameStr,pos=(50,50),size=(200,200))
         self.text2=wx.StaticText(panel,label=pwStr,pos=(150,50),size=(200,200))
         self.text3=wx.StaticText(panel,label=timeStr,pos=(250,50),size=(200,200))
