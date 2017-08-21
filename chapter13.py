@@ -517,185 +517,480 @@
 #
 # print douHao(123456.89)
 
-#13-4 用户注册
-import shelve
-import wx
-from time import ctime,time
-import sys
+# #13-4 用户注册
+# import shelve
+# import wx
+# from time import ctime,time
+# import sys
+#
+# class My_DB(object):
+#     '''数据库类,在实例化操作时加载已经保存的用户信息,提供访问函数来添加或更新数据库信息.
+#        数据修改后,数据库会在垃圾回收时将新信息保存到磁盘'''
+#     def __init__(self,name):
+#         self.db=shelve.\
+#             open('/home/vetains/pywork/pycore/chapter13.dat')   #打开数据库
+#         self.name=name
+#         if self.name in self.db.keys():
+#             self.info=self.db[self.name]
+#         else:
+#             self.db[self.name]=''
+#             self.info=''
+#
+#     def LookOrUpdate(self,newInfo=None):
+#         '''newInfo有值时更新数据库,否则直接返回数据库内的info'''
+#         if newInfo:     #调用方法时若给了newInfo,则更新info
+#             self.info=newInfo
+#         return self.info
+#
+#     def __del__(self):
+#         '''数据库类被垃圾回收时保存信息到磁盘'''
+#         self.db[self.name]=self.info
+#         self.db.close()
+#
+#
+# #更新7-5的代码,运用上信息数据库类,修改主要在welcome函数里
+#
+# class Creation(wx.Frame):
+#     '''一个询问界面'''
+#     def __init__(self):
+#         wx.Frame.__init__(self,None,-1,'一个询问',pos=(60,60),size=(250,300))
+#         panel=wx.Panel(self,-1)
+#         self.text1=wx.StaticText(panel,label='你是否要注册一个账户？',
+#                                  pos=(50,50),size=(180,40))
+#         self.button1=wx.Button(panel,label='是',pos=(60,100),size=(40,25))
+#         self.button1.Bind(wx.EVT_BUTTON,self.LogOnClick)
+#         self.button2=wx.Button(panel,label='否',pos=(100,100),size=(40,25))
+#         self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
+#
+#     def QuitClick(self,event):
+#         self.Destroy()
+#     def LogOnClick(self,enent):
+#         logon=LogOn()
+#         logon.Show()
+#         self.Destroy()
+#
+# class LogOn(wx.Frame):
+#     '''一个注册界面'''
+#     def __init__(self):
+#         wx.Frame.__init__(self,None,-1,'创建账户',size=(400,250))
+#         panel=wx.Panel(self,-1)
+#         #用户名与密码文本框
+#         db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
+#         now=ctime(time())   #now是由ctime()返回的
+#         self.text1=wx.StaticText(panel,label='用户名:',pos=(50,50),size=(50,25))
+#         self.text2=wx.StaticText(panel,label='密码:',pos=(50,70),size=(50,25))
+#         self.textCtrl1=wx.TextCtrl(panel,pos=(105,50),size=(75,25))
+#         self.textCtrl2=wx.TextCtrl(panel,pos=(105,70),size=(75,25))
+#         self.name=str(self.textCtrl1.GetValue())
+#         self.password=str(self.textCtrl2.GetValue())
+#         #注册按钮
+#         self.button1=wx.Button(panel,label='注册',pos=(65,100),size=(40,30))
+#         # self.button1.Bind(wx.EVT_BUTTON,lambda event,\
+#         #     n=self.name,p=self.password:self.CreateClick(event,n,p))
+#         self.button1.Bind(wx.EVT_BUTTON,self.CreateClick)
+#         #取消按钮
+#         self.button2=wx.Button(panel,label='取消',pos=(105,100),size=(40,30))
+#         self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
+#
+#     def QuitClick(self,event):
+#         '''取消事件'''
+#         self.Destroy()
+#
+#     def CreateClick(self,event):
+#         '''注册事件'''
+#         name=str(self.textCtrl1.GetValue())
+#         password=str(self.textCtrl2.GetValue())
+#
+#         db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
+#         now=ctime(time())   #now是由ctime()返回的字符串
+#         newUser={'password':password,'time':now}
+#         db[name]=newUser
+#         db.close()
+#         self.Destroy()
+#
+# class adminMenue(wx.Frame):
+#     def __init__(self):
+#         wx.Frame.__init__(self,None,-1,'管理菜单',size=(600,600))
+#         panel=wx.Panel(self,-1)
+#         db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+#         nameList=[]
+#         pwList=[]
+#         timeList=[]
+#         for eachKey in db.keys():
+#             nameList.append(eachKey)
+#             pwList.append(db[eachKey]['password'])
+#             timeList.append(db[eachKey]['time'])
+#         db.close()
+#         nameStr='名单列表:\n'+'\n'.join(nameList)
+#         pwStr='密码列表:\n'+'\n'.join(pwList)
+#         timeStr='登录时间:\n'+'\n'.join(timeList)
+#         self.text1=wx.StaticText(panel,label=nameStr,pos=(50,50),size=(200,200))
+#         self.text2=wx.StaticText(panel,label=pwStr,pos=(150,50),size=(200,200))
+#         self.text3=wx.StaticText(panel,label=timeStr,pos=(250,50),size=(200,200))
+#
+# class Main(wx.Frame):
+#     '''主界面'''
+#     def __init__(self):
+#         wx.Frame.__init__(self,None,-1,'主界面',size=(360,240))
+#         panel=wx.Panel(self,-1)
+#         #用户名
+#         self.text1=wx.StaticText(panel,label='用户名:',pos=(10,10),size=(100,50))
+#         self.textCtrl1=wx.TextCtrl(panel,pos=(100,10),size=(100,10))
+#         # name=str(textCtrl1.GetValue())    #像这样直接获取文本框的文本是不可行的.
+#         #密码
+#         self.text2=wx.StaticText(panel,label='密码:',pos=(10,60),size=(100,50))
+#         self.textCtrl2=wx.TextCtrl(panel,pos=(100,60),size=(100,0))
+#         # password=str(textCtrl2.GetValue())
+#
+#         #登录按钮
+#         self.logInButton=wx.Button(panel,-1,label='登录',pos=(30,180),size=(100,50))
+#         self.logInButton.Bind(wx.EVT_BUTTON,self.logInClick)
+#         #菜单按钮
+#         self.adminMenuButton=wx.Button(panel,-1,label='菜单管理',pos=(130,180),size=(100,50))
+#         self.adminMenuButton.Bind(wx.EVT_BUTTON,self.adminMenuClick)
+#         #退出按钮
+#         self.quitButton=wx.Button(panel,-1,label='退出',pos=(230,180),size=(100,50))
+#         self.quitButton.Bind(wx.EVT_BUTTON,self.quitClick)
+#
+#     def adminMenuClick(self,event):
+#         '''菜单按钮事件'''
+#         admin=adminMenue()
+#         admin.Show()
+#
+#     def quitClick(self,event):
+#         '''退出按钮事件'''
+#         sys.exit()
+#
+#     def logInClick(self,event):
+#         '''登录按钮事件'''
+#
+#         name=str(self.textCtrl1.GetValue())
+#         password=str(self.textCtrl2.GetValue())
+#
+#         db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+#         keyList=db.keys()
+#         db.close()
+#
+#         if name in keyList:
+#
+#             db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+#             dbPassword=db[name]['password']
+#             db.close()
+#
+#             if password==dbPassword:
+#                 '''用户名已存在且密码正确则唤起欢迎界面'''
+#                 self.welcome(name,password)
+#             else:
+#                 '''密码错误唤起密码错误界面'''
+#                 self.refuse(name)
+#         else:
+#             '''用户名不存在则询问是否注册'''
+#             creation=Creation()
+#             creation.Show()
+#
+#     def welcome(self,name,password):
+#         '''欢迎界面||因13-4而增加了内容'''
+#
+#         def fix(event):
+#             '''修改按钮事件'''
+#             newInfo=str(textCtrl1.GetValue())
+#             infoDB.LookOrUpdate(newInfo)
+#
+#         def quit(event):
+#             '''退出按钮事件'''
+#             welcomeWin.Destroy()
+#
+#         welcomeApp=wx.App()
+#         welcomeWin=wx.Frame(None,title='欢迎!',size=(400,400))
+#         panel=wx.Panel(welcomeWin,-1)
+#
+#         welStr='欢迎,%s,你的上次登录时间为'
+#         text1=wx.StaticText(panel,label=welStr%name,pos=(50,50),size=(500,20))
+#         db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
+#         lastTime=db[name]['time']    #上次登录时间
+#         now=ctime(time())            #更新登录时间
+#         db[name]={'password':password,'time':now}
+#         db.close()
+#         text2=wx.StaticText(panel,label=lastTime,pos=(50,80),size=(250,20))
+#         #调用数据库类
+#         infoDB=My_DB(name)
+#         text3=wx.StaticText(panel,label='储存的信息为:',pos=(50,105),size=(250,20))
+#         #显示储存信息的文本框,可修改,默认值为信息 value=infoDB.info
+#         textCtrl1=wx.TextCtrl(panel,value=infoDB.info,pos=(50,130),size=(250,20))
+#         #设置修改储存信息的按钮
+#         FixButton=wx.Button(panel,label='修改',pos=(50,155),size=(50,45))
+#         FixButton.Bind(wx.EVT_BUTTON,fix)
+#         #设置退出按钮
+#         QuitButton=wx.Button(panel,label='退出',pos=(105,155),size=(50,45))
+#         QuitButton.Bind(wx.EVT_BUTTON,quit)
+#
+#
+#         welcomeWin.Show()
+#         welcomeApp.MainLoop()
+#
+#     def refuse(self,name):
+#         '''密码错误界面'''
+#         refuseApp=wx.App()
+#         refuseWin=wx.Frame(None,title='密码错误!',size=(200,200))
+#         panel=wx.Panel(refuseWin,-1)
+#         text1=wx.StaticText(panel,label='%s,密码错误'%name,pos=(50,50),size=(50,10))
+#         refuseWin.Show()
+#         refuseApp.MainLoop()
+#
+#
+# def test():
+#     '''执行函数'''
+#     app=wx.App()
+#     main=Main()
+#     main.Show()
+#     app.MainLoop()
+#
+# if __name__=='__main__':
+#     test()
 
+# # 13-5 几何，Point类，记录X,Y坐标点
+# class Point(object):
+#     def __init__(self,x=0,y=0):
+#         self.x=x
+#         self.y=y
+#
+#     def __str__(self):
+#         return '(%s,%s)'%(str(self.x),str(self.y))
+#
+#     __repr__=__str__
 
-class Creation(wx.Frame):
-    '''一个询问界面'''
-    def __init__(self):
-        wx.Frame.__init__(self,None,-1,'一个询问',pos=(60,60),size=(250,300))
-        panel=wx.Panel(self,-1)
-        self.text1=wx.StaticText(panel,label='你是否要注册一个账户？',
-                                 pos=(50,50),size=(180,40))
-        self.button1=wx.Button(panel,label='是',pos=(60,100),size=(40,25))
-        self.button1.Bind(wx.EVT_BUTTON,self.LogOnClick)
-        self.button2=wx.Button(panel,label='否',pos=(100,100),size=(40,25))
-        self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
+# # 13-6 直线或斜线类
+# from math import sqrt
+#
+# class Line(object):
+#     '''线段类'''
+#     def __init__(self,x1=0,y1=0,x2=0,y2=0):
+#         self.x1=x1
+#         self.y1=y1
+#         self.x2=x2
+#         self.y2=y2
+#
+#     def __str__(self):
+#         return '起点(%s,%s),终点(%s,%s)'%(self.x1,self.y1,self.x2,self.y2)
+#
+#     __repr__=__str__
+#
+#     # def __set__(self,obj,newx1,newy1,newx2,newy2):
+#     #     self.x1=newx1         #所以__set__这种描述符到底有什么用
+#     #     self.y1=newy1
+#     #     self.x2=newx2
+#     #     self.y2=newy2
+#
+#
+#     def length(self):
+#         '''线段长度'''
+#         length=sqrt((self.x1-self.x2)**2+(self.y1-self.y2)**2)
+#         return '线段长度为:%s'%str(length)
+#
+#     def slope(self):
+#         '''线段斜率'''
+#         try:
+#             slope=float(self.y2-self.y1)/float(self.x2-self.x1)
+#             return '线段斜率为：%s'%str(slope)
+#         except ZeroDivisionError:
+#             return '竖直线无斜率'
 
-    def QuitClick(self,event):
-        self.Destroy()
-    def LogOnClick(self,enent):
-        logon=LogOn()
-        logon.Show()
-        self.Destroy()
+#13-7 数据类
 
-class LogOn(wx.Frame):
-    '''一个注册界面'''
-    def __init__(self):
-        wx.Frame.__init__(self,None,-1,'创建账户',size=(400,250))
-        panel=wx.Panel(self,-1)
-        #用户名与密码文本框
-        db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
-        now=ctime(time())   #now是由ctime()返回的
-        self.text1=wx.StaticText(panel,label='用户名:',pos=(50,50),size=(50,25))
-        self.text2=wx.StaticText(panel,label='密码:',pos=(50,70),size=(50,25))
-        self.textCtrl1=wx.TextCtrl(panel,pos=(105,50),size=(75,25))
-        self.textCtrl2=wx.TextCtrl(panel,pos=(105,70),size=(75,25))
-        self.name=str(self.textCtrl1.GetValue())
-        self.password=str(self.textCtrl2.GetValue())
-        #注册按钮
-        self.button1=wx.Button(panel,label='注册',pos=(65,100),size=(40,30))
-        # self.button1.Bind(wx.EVT_BUTTON,lambda event,\
-        #     n=self.name,p=self.password:self.CreateClick(event,n,p))
-        self.button1.Bind(wx.EVT_BUTTON,self.CreateClick)
-        #取消按钮
-        self.button2=wx.Button(panel,label='取消',pos=(105,100),size=(40,30))
-        self.button2.Bind(wx.EVT_BUTTON,self.QuitClick)
+# #13-8 堆栈    等学完了《数据结构与算法》，回来试试不用列表的解决办法
+# class Stack(object):
+#     '''堆栈类,借助列表实现，last-in-first-out,LIFO'''
+#     def __init__(self,seq=[]):
+#         self.StackList=list(seq)
+#
+#     def __str__(self):
+#         return str(self.StackList)
+#
+#     __repr__=__str__
+#
+#     def push(self,elem):
+#         '''向堆栈中压入一个数据项'''
+#         self.StackList.append(elem)
+#
+#     def pop(self):
+#         '''从堆栈中移出一个数据项'''
+#         return self.StackList.pop()
+#
+#     def isempty(self):
+#         '''判断堆栈是否为空，返回0或1'''
+#         if bool(len(self.StackList)):
+#             return 1
+#         else:
+#             return 0
+#
+#     def peek(self):
+#         '''取出堆栈顶部的数据项，但不移除'''
+#         return self.StackList[-1]
 
-    def QuitClick(self,event):
-        '''取消事件'''
-        self.Destroy()
+# #13-9 队列类/
+# class Queue(object):
+#     '''队列类，先进先出，first-in-first-out,FIFO'''
+#     def __init__(self,seq=[]):
+#         self.QueueList=list(seq)
+#
+#     def __str__(self):
+#         return str(self.QueueList)
+#
+#     __repr__=__str__
+#
+#     def enqueue(self,elem):
+#         '''在列表的尾部加入一个新的元素'''
+#         self.QueueList.append(elem)
+#
+#     def dequeue(self):
+#         '''在列表的头部取出一个元素，返回它并将它移除'''
+#         # elem=self.QueueList[0]
+#         # del self.QueueList[0]
+#         # return elem
+#         return self.QueueList.pop(0)
 
-    def CreateClick(self,event):
-        '''注册事件'''
-        name=str(self.textCtrl1.GetValue())
-        password=str(self.textCtrl2.GetValue())
+# #13-10 堆栈和队列
+# class SAQ(object):
+#     def __init__(self,seq=[]):
+#         self.SAQList=list(seq)
+#
+#     def __str__(self):
+#         return str(self.SAQList)
+#
+#     __repr__=__str__
+#
+#     def shift(self):
+#         '''返回并删除列表中的第一个元素'''
+#         return self.SAQList.pop(0)
+#
+#     def upshift(self,elem):
+#         '''在列表的头部压入一个新的元素'''
+#         self.SAQList.insert(0,elem)
+#
+#     def push(self,elem):
+#         '''在列表尾部加上一个新元素'''
+#         self.SAQList.append(elem)
+#
+#     def pop(self):
+#         '''返回并删除列表中的最后一个元素'''
+#         return self.SAQList.pop()
 
-        db=shelve.open(r'/home/vetains/pywork/pycore/chapter7.dat')
-        now=ctime(time())   #now是由ctime()返回的字符串
-        newUser={'password':password,'time':now}
-        db[name]=newUser
-        db.close()
-        self.Destroy()
+# #13-11 电子商务
+# '''顾客类User，存货清单类Item，购物车类Cart。可以将多个货物放在购物车里，顾客可以有多个购物车'''
+#
+# class User(object):
+#     '''顾客类'''
+#     def __init__(self,name):
+#         self.name=name
+#         self.Hand={}  #手里的购物车,默认有0个购物车
+#
+#     def getCart(self):
+#         '''获得一个购物车'''
+#         i=len(self.Hand.keys())+1   #这是手里的第i个购物车
+#         self.Hand[i]=Cart()
+#
+#     def getItem(self,item,i=1):
+#         '''往第i个购物车里添加货物'''
+#         if isinstance(item,Item):
+#             self.Hand[i].append(item)
+#         else:
+#             raise TypeError,'只能往购物车里添加已有的货物'
+#
+#     def askItemPrice(self,item):
+#         '''询问单件货物价格'''
+#         if isinstance(item,Item):
+#             return '货物%s的价格是 %s'%(item.name,str(item.price))
+#         else:
+#             raise TypeError,'没有这个货物'
+#
+#     def askAllMoney(self,i=1):
+#         '''询问第i个购物车里的货物总价'''
+#         if i>len(self.Hand):
+#             raise IndexError,'你没有这个购物车'
+#         else:
+#             return '这个购物车里的货物总价为：%s'%str(self.Hand[i].money())
+#
+#     def askNums(self,i=1):
+#         '''询问车里的货物数量'''
+#         return '购物车里的货物数量为:%s'%str(self.Hand[i].nums())
+#
+# class Item(object):
+#     '''货物类，两个属性，名字和价格'''
+#     def __init__(self,name,price):
+#         self.name=name
+#         if isinstance(price,int) or isinstance(price,float):
+#             self.price=float(price)
+#         else:
+#             raise TypeError,'价格应为整型或浮点型'
+#
+# class Cart(list):
+#     '''购物车类，可以查询车内的货物数量和总价格'''
+#     def __init__(self):
+#         super(Cart,self).__init__()
+#
+#     def nums(self):
+#         '''返回购物车内货物数量'''
+#         return len(self)
+#
+#     def money(self):
+#         '''购物车里的货物总价格'''
+#         MoneySum=0
+#         for i in self:
+#             MoneySum+=i.price
+#         return MoneySum
+#
+# def main():
+#     '''主体函数，模拟一次购物过程'''
+#     mike=User('Mike')   #客户Mike
+#     item1=Item('apple',1.50)
+#     item2=Item('pear',2.50)
+#     item3=Item('banana',3.40)
+#     itemList=[item1,item2,item3]
+#
+#     print '货物总览:'
+#     print '-'*20
+#     for i in range(3):      #购物菜单
+#         print itemList[i].name
+#     print '-'*20
+#
+#     mike.getCart()
+#     print 'Mike获得一辆购物车'
+#     print
+#
+#     print 'Mike询问了货物1的价格: '+mike.askItemPrice(item1)
+#     print 'Mike询问了货物2的价格: '+mike.askItemPrice(item2)
+#     print 'Mike询问了货物3的价格: '+mike.askItemPrice(item3)
+#     print
+#
+#     print 'Mike把货物1,2放入了购物车'
+#     mike.getItem(item1)
+#     mike.getItem(item2)
+#     print
+#
+#     print 'Mike询问了当前购物车里的货物的货物数目和总价格'
+#     print mike.askNums()
+#     print mike.askAllMoney()
+#     print
+#
+#     print 'Mike获得第二辆购物车'
+#     mike.getCart()
+#     print
+#
+#     print 'Mike继续购买3个苹果和3个香蕉'
+#     for i in range(3):
+#         mike.getItem(item1,i=2)
+#         mike.getItem(item3,i=2)
+#
+#     print 'Mike询问了第二辆购物车里的货物数目和总价格'
+#     print mike.askNums(2)
+#     print mike.askAllMoney(2)
+#     print
+#
+#     print '此时购物车1的情况是：'
+#     print mike.askNums(1)
+#     print mike.askAllMoney(1)
+#
+# if __name__=='__main__':
+    main()
 
-class adminMenue(wx.Frame):
-    def __init__(self):
-        wx.Frame.__init__(self,None,-1,'管理菜单',size=(600,600))
-        panel=wx.Panel(self,-1)
-        db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
-        nameList=[]
-        pwList=[]
-        timeList=[]
-        for eachKey in db.keys():
-            nameList.append(eachKey)
-            pwList.append(db[eachKey]['password'])
-            timeList.append(db[eachKey]['time'])
-        db.close()
-        nameStr='名单列表:\n'+'\n'.join(nameList)
-        pwStr='密码列表:\n'+'\n'.join(pwList)
-        timeStr='登录时间:\n'+'\n'.join(timeList)
-        self.text1=wx.StaticText(panel,label=nameStr,pos=(50,50),size=(200,200))
-        self.text2=wx.StaticText(panel,label=pwStr,pos=(150,50),size=(200,200))
-        self.text3=wx.StaticText(panel,label=timeStr,pos=(250,50),size=(200,200))
-
-class Main(wx.Frame):
-    '''主界面'''
-    def __init__(self):
-        wx.Frame.__init__(self,None,-1,'主界面',size=(360,240))
-        panel=wx.Panel(self,-1)
-        #用户名
-        self.text1=wx.StaticText(panel,label='用户名:',pos=(10,10),size=(100,50))
-        self.textCtrl1=wx.TextCtrl(panel,pos=(100,10),size=(100,10))
-        # name=str(textCtrl1.GetValue())    #像这样直接获取文本框的文本是不可行的.
-        #密码
-        self.text2=wx.StaticText(panel,label='密码:',pos=(10,60),size=(100,50))
-        self.textCtrl2=wx.TextCtrl(panel,pos=(100,60),size=(100,0))
-        # password=str(textCtrl2.GetValue())
-
-        #登录按钮
-        self.logInButton=wx.Button(panel,-1,label='登录',pos=(30,180),size=(100,50))
-        self.logInButton.Bind(wx.EVT_BUTTON,self.logInClick)
-        #菜单按钮
-        self.adminMenuButton=wx.Button(panel,-1,label='菜单管理',pos=(130,180),size=(100,50))
-        self.adminMenuButton.Bind(wx.EVT_BUTTON,self.adminMenuClick)
-        #退出按钮
-        self.quitButton=wx.Button(panel,-1,label='退出',pos=(230,180),size=(100,50))
-        self.quitButton.Bind(wx.EVT_BUTTON,self.quitClick)
-
-    def adminMenuClick(self,event):
-        '''菜单按钮事件'''
-        admin=adminMenue()
-        admin.Show()
-
-    def quitClick(self,event):
-        '''退出按钮事件'''
-        sys.exit()
-
-    def logInClick(self,event):
-        '''登录按钮事件'''
-
-        name=str(self.textCtrl1.GetValue())
-        password=str(self.textCtrl2.GetValue())
-
-        db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
-        keyList=db.keys()
-        db.close()
-
-        if name in keyList:
-
-            db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
-            dbPassword=db[name]['password']
-            db.close()
-
-            if password==dbPassword:
-                '''用户名已存在且密码正确则唤起欢迎界面'''
-                self.welcome(name,password)
-            else:
-                '''密码错误唤起密码错误界面'''
-                self.refuse(name)
-        else:
-            '''用户名不存在则询问是否注册'''
-            creation=Creation()
-            creation.Show()
-
-    def welcome(self,name,password):
-        '''欢迎界面'''
-        welcomeApp=wx.App()
-        welcomeWin=wx.Frame(None,title='欢迎!',size=(400,400))
-        panel=wx.Panel(welcomeWin,-1)
-
-        welStr='欢迎,%s,你的上次登录时间为'
-        text1=wx.StaticText(panel,label=welStr%name,pos=(50,50),size=(500,20))
-        db=shelve.open('/home/vetains/pywork/pycore/chapter7.dat')
-        lastTime=db[name]['time']    #上次登录时间
-        now=ctime(time())            #更新登录时间
-        db[name]={'password':password,'time':now}
-        db.close()
-
-        text2=wx.StaticText(panel,label=lastTime,pos=(50,80),size=(250,20))
-
-        welcomeWin.Show()
-        welcomeApp.MainLoop()
-
-    def refuse(self,name):
-        '''密码错误界面'''
-        refuseApp=wx.App()
-        refuseWin=wx.Frame(None,title='密码错误!',size=(200,200))
-        panel=wx.Panel(refuseWin,-1)
-        text1=wx.StaticText(panel,label='%s,密码错误'%name,pos=(50,50),size=(50,10))
-        refuseWin.Show()
-        refuseApp.MainLoop()
-
-
-def test():
-    app=wx.App()
-    main=Main()
-    main.Show()
-    app.MainLoop()
-
-if __name__=='__main__':
-    test()
+# 13-12 聊天室
