@@ -991,6 +991,6 @@
 #     print mike.askAllMoney(1)
 #
 # if __name__=='__main__':
-    main()
+    # main()
 
 # 13-12 聊天室
